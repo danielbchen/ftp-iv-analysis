@@ -20,6 +20,11 @@ def main():
     print('Please find a table below summarizing the counts: \n\n',
           sum_stats)
 
+    # Question 3: 
+    xtabs = treat_dummy_xtab(df)
+    print('Cross-tabluation of original assignment vs. belief in time limit: \n\n',
+          xtabs)
+
 
 def admin_data_loader():
     """
@@ -55,6 +60,8 @@ def ftp_merger(dataframe1, dataframe2):
 
 def summary_stats(dataframe):
     """
+    Returns a dataframe showing how many people believed in the time limit vs.
+    how many people did not. 
     """
 
     df = dataframe.copy()
@@ -73,3 +80,24 @@ def summary_stats(dataframe):
                                   ignore_index=True)
 
     return sum_table
+
+
+def treat_dummy_xtab(dataframe):
+    """
+    Creates a new treatment variable. 1 for those who believed in time limit. 
+    0 for those who did not. Everyone else is dropped. Tabulates across original 
+    treatment variable. 
+    """
+
+    df = dataframe.copy()
+
+    df = df[(df['fmi2_x'] == 1) | (df['fmi2_x'] == 2)]
+
+    df['NEW_TREAT'] = [1 if val == 1 else 0 for val in df['fmi2_x']]
+
+    tabs = pd.crosstab(index=df['e_x'], columns=df['NEW_TREAT'], 
+                       margins=True, margins_name='Total',
+                       rownames=['Original Treatment'],
+                       colnames=['Time Limit Belief'])
+
+    return tabs
