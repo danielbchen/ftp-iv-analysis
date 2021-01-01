@@ -91,7 +91,7 @@ def new_dummy_creator(dataframe):
 
     df = df[(df['fmi2_x'] == 1) | (df['fmi2_x'] == 2)]
 
-    df['NEW_TREAT'] = [1 if val == 1 else 0 for val in df['fmi2_x']]
+    df['TLyes'] = [1 if val == 1 else 0 for val in df['fmi2_x']]
 
     return df
 
@@ -101,7 +101,7 @@ def xtab_generator(dataframe):
 
     df = dataframe.copy()
 
-    tabs = pd.crosstab(index=df['e_x'], columns=df['NEW_TREAT'], 
+    tabs = pd.crosstab(index=df['e_x'], columns=df['TLyes'], 
                        margins=True, margins_name='Total',
                        rownames=['Original Treatment'],
                        colnames=['Time Limit Belief'])
@@ -135,21 +135,40 @@ def mean_imputer(dataframe):
     return df
 
 
+ def paramater_retriever(list_object, parameter):
+    """Retrieves a specified parameter from ols regression output."""
+
+    if parameter == 'coefficients':
+        values = [item.params for item in list_object]
+    elif parameter == 'standard error':
+        values = [item.bse for item in list_object]
+    elif parameter == 'pvalues':
+        values = [item.pvalues for item in list_object]
+    elif parameter == 'conf_int_low':
+        values = [item.conf_int()[0] for item in list_object]
+    elif parameter == 'conf_int_high':
+        values = [item.conf_int()[1] for item in list_object]
+    
+    values = [value[1] for value in values]
+
+    return values
+
+
 def time_limit_ols(dataframe):
     """Estimates effect of believing in the time limit on welfare receipt."""
 
     df = dataframe.copy()
 
     dependent_variables = [
-        'vrecc217_x',
-        'vrecc2t5_x',
-        'vrecc6t9_x',
-        'vrec1013_x',
-        'vrec1417_x',
+        'vrecc217',
+        'vrecc2t5',
+        'vrecc6t9',
+        'vrec1013',
+        'vrec1417',
     ]
 
     covariates = [
-        'NEW_TREAT',
+        'TLyes',
         'male_x',
         'agelt20_x',
         'age2534_x',
@@ -180,4 +199,24 @@ def time_limit_ols(dataframe):
 
     regressions = [smf.ols(formula=formula, data=df).fit() for formula in formulas]
 
-    df['vrecc217']
+    df = pd.DataFrame({
+        'Weflare_Variable': dependent_variables,
+        'Coefficient': paramater_retriever(regressions, 'coefficients'),
+        'Std_Error': paramater_retriever(regressions, 'standard error'),
+        'p_value': paramater_retriever(regressions, 'pvalues'),
+        'Conf_Low': paramater_retriever(regressions, 'conf_int_low'),
+        'Conf_High': paramater_retriever(regressions, 'conf_int_high')})
+
+    df['t_stat'] = df['Coefficient'] / df['Std_Error']
+
+    df = df[[
+        'Weflare_Variable', 
+        'Coefficient',
+        'Std_Error',
+        't_stat',
+        'p_value',
+        'Conf_Low',
+        'Conf_High'
+    ]]
+
+    return df
