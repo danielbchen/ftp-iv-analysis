@@ -125,3 +125,49 @@ def mean_imputer(dataframe):
     df[columns] = df[columns].fillna(df[columns].mean())
 
     return df
+
+
+def time_limit_ols(dataframe):
+    """Estimates effect of believing in the time limit on welfare receipt."""
+
+    df = dataframe.copy()
+
+    dependent_variables = [
+        'vrecc217_x',
+        'vrecc2t5_x',
+        'vrecc6t9_x',
+        'vrec1013_x',
+        'vrec1417_x',
+    ]
+
+    covariates = [
+        'NEW_TREAT',
+        'male_x',
+        'agelt20_x',
+        'age2534_x',
+        'age3544_x',
+        'agege45_x',
+        'black_x',
+        'hisp_x',
+        'otheth_x',
+        'martog_x',
+        'marapt_x',
+        'nohsged_x',
+        'applcant_x',
+        'yremp_x',
+        'emppq1_x',
+        'yrearn_x',
+        'yrearnsq_x',
+        'pearn1_x',
+        'recpc1_x',
+        'yrrec_x',
+        'yrkrec_x',
+        'rfspc1_x',
+        'yrrfs_x',
+        'yrkrfs_x',
+    ]
+
+    right_hand_side =  ' + '.join([variable for variable in covariates])
+    formulas = [dep_var + ' ~ ' + right_hand_side for dep_var in dependent_variables]
+
+    regressions = [smf.ols(formula=formula, data=df).fit() for formula in formulas]
