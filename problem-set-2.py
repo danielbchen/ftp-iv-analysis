@@ -102,6 +102,26 @@ def treat_dummy_xtab(dataframe):
 
 
 def mean_imputer(dataframe):
-    """Fills missing values in covariate columns with column mean."""
+    """Takes in the admin and survey merged data and returns a dataframe with
+    covariate columns containing NA values filled with the mean of that column. 
+    """
 
     df = dataframe.copy()
+
+    columns = [
+        'male_x',
+        'agelt20_x',
+        'age2534_x',
+        'age3544_x',
+        'agege45_x',
+        'black_x',
+        'hisp_x',
+        'otheth_x',
+        'martog_x',
+        'marapt_x',
+        'nohsged_x',
+        'applcant_x'
+    ]
+    df[columns] = df[columns].fillna(df[columns].mean())
+
+    return df
