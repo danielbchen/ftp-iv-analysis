@@ -11,18 +11,24 @@ def main():
     admin = admin_data_loader()
     survey = survey_data_loader()
     df = ftp_merger(admin, survey)
-    print('Question 1:\n', 
+    print('QUESTION 1: \n', 
           len(df), 
           'of the original sample members from the admin records remain in the survey data.')
 
+    print('\n\n')
+
     # Question 2: 
     sum_stats = summary_stats(df)
-    print('Please find a table below summarizing the counts: \n\n',
+    print('QUESTION 2: \n',
+          'Please find a table below summarizing the counts: \n\n',
           sum_stats)
+
+    print('\n\n')
 
     # Question 3: 
     xtabs = treat_dummy_xtab(df)
-    print('Cross-tabluation of original assignment vs. belief in time limit: \n\n',
+    print('QUESTION 3: \n',
+          'Cross-tabluation of original assignment vs. belief in time limit: \n\n',
           xtabs)
 
 
@@ -93,3 +99,9 @@ def treat_dummy_xtab(dataframe):
                        colnames=['Time Limit Belief'])
 
     return tabs
+
+
+def mean_imputer(dataframe):
+    """Fills missing values in covariate columns with column mean."""
+
+    df = dataframe.copy()
