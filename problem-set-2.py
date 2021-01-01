@@ -27,9 +27,7 @@ def main():
 
 
 def admin_data_loader():
-    """
-    Loads ftp administrative dataset. 
-    """
+    """Loads ftp administrative dataset."""
 
     path = '/Users/danielchen/Desktop/UChicago/Year Two/Autumn 2020/Program Evaluation/Problem Sets/Problem Set 2/ftp_ar.dta'
     df = pd.read_stata(path)
@@ -38,9 +36,7 @@ def admin_data_loader():
 
 
 def survey_data_loader():
-    """
-    Loads ftp survey dataset.
-    """
+    """Loads ftp survey dataset."""
 
     path = '/Users/danielchen/Desktop/UChicago/Year Two/Autumn 2020/Program Evaluation/Problem Sets/Problem Set 1/ftp_srv.dta'
     df = pd.read_stata(path)
@@ -49,9 +45,7 @@ def survey_data_loader():
 
 
 def ftp_merger(dataframe1, dataframe2):
-    """
-    Merges the two ftp datasets. 
-    """
+    """Merges the two ftp datasets."""
 
     df = pd.merge(dataframe1, dataframe2, on='sampleid')
 
@@ -59,9 +53,8 @@ def ftp_merger(dataframe1, dataframe2):
 
 
 def summary_stats(dataframe):
-    """
-    Returns a dataframe showing how many people believed in the time limit vs.
-    how many people did not. 
+    """Returns a dataframe showing how many people believed in the time limit 
+    vs. how many people did not. 
     """
 
     df = dataframe.copy()
@@ -83,10 +76,9 @@ def summary_stats(dataframe):
 
 
 def treat_dummy_xtab(dataframe):
-    """
-    Creates a new treatment variable. 1 for those who believed in time limit. 
-    0 for those who did not. Everyone else is dropped. Tabulates across original 
-    treatment variable. 
+    """Creates a new treatment variable. 1 for those who believed in time limit. 
+    0 for those who did not. Everyone else is dropped. 
+    Tabulates across original treatment variable. 
     """
 
     df = dataframe.copy()
