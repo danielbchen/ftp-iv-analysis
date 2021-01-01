@@ -25,8 +25,9 @@ def main():
 
     print('\n\n')
 
-    # Question 3: 
-    xtabs = treat_dummy_xtab(df)
+    # Question 3:
+    df = new_dummy_creator(df) 
+    xtabs = xtab_generator(df)
     print('QUESTION 3: \n',
           'Cross-tabluation of original assignment vs. belief in time limit: \n\n',
           xtabs)
@@ -81,10 +82,9 @@ def summary_stats(dataframe):
     return sum_table
 
 
-def treat_dummy_xtab(dataframe):
+def new_dummy_creator(dataframe):
     """Creates a new treatment variable. 1 for those who believed in time limit. 
     0 for those who did not. Everyone else is dropped. 
-    Tabulates across original treatment variable. 
     """
 
     df = dataframe.copy()
@@ -92,6 +92,14 @@ def treat_dummy_xtab(dataframe):
     df = df[(df['fmi2_x'] == 1) | (df['fmi2_x'] == 2)]
 
     df['NEW_TREAT'] = [1 if val == 1 else 0 for val in df['fmi2_x']]
+
+    return df
+
+
+def xtab_generator(dataframe):
+    """Generates crosstabs of original dummy variable vs. new dummy variable."""
+
+    df = dataframe.copy()
 
     tabs = pd.crosstab(index=df['e_x'], columns=df['NEW_TREAT'], 
                        margins=True, margins_name='Total',
@@ -171,3 +179,5 @@ def time_limit_ols(dataframe):
     formulas = [dep_var + ' ~ ' + right_hand_side for dep_var in dependent_variables]
 
     regressions = [smf.ols(formula=formula, data=df).fit() for formula in formulas]
+
+    df['vrecc217']
