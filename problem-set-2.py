@@ -32,6 +32,14 @@ def main():
           'Cross-tabluation of original assignment vs. belief in time limit: \n\n',
           xtabs)
 
+    print('\n\n')
+
+    # Question 4:
+    time_limit_results = time_limit_ols(df)
+    print('QUESTION 4: \n',
+          'Effect of believing in the time limit on welfare receipt: \n\n',
+          time_limit_results)
+
 
 def admin_data_loader():
     """Loads ftp administrative dataset."""
