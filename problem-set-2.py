@@ -143,7 +143,7 @@ def mean_imputer(dataframe):
     return df
 
 
- def paramater_retriever(list_object, parameter):
+def paramater_retriever(list_object, parameter):
     """Retrieves a specified parameter from ols regression output."""
 
     if parameter == 'coefficients':
@@ -228,3 +228,44 @@ def time_limit_ols(dataframe):
     ]]
 
     return df
+
+def iv_estimation(dataframe):
+    """
+    """
+
+    df = dataframe.copy()
+
+    df['CONSTANT'] = 1
+
+    controls = [
+        'male_x',
+        'agelt20_x',
+        'age2534_x',
+        'age3544_x',
+        'agege45_x',
+        'black_x',
+        'hisp_x',
+        'otheth_x',
+        'martog_x',
+        'marapt_x',
+        'nohsged_x',
+        'applcant_x',
+        'yremp_x',
+        'emppq1_x',
+        'yrearn_x',
+        'yrearnsq_x',
+        'pearn1_x',
+        'recpc1_x',
+        'yrrec_x',
+        'yrkrec_x',
+        'rfspc1_x',
+        'yrrfs_x',
+        'yrkrfs_x',
+        'CONSTANT'
+    ]
+
+    iv_mod = IV2SLS(df['vempq2t5'], df[controls],
+                    df['e_x'], df['TLyes'])
+    
+    iv_mod.fit().summary
+
