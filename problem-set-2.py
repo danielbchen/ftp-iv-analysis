@@ -11,6 +11,8 @@ def main():
     admin = admin_data_loader()
     survey = survey_data_loader()
     df = ftp_merger(admin, survey)
+    df = drop_y_columns(df)
+    df = colunm_renamer(df)
     print('QUESTION 1: \n', 
           len(df), 
           'of the original sample members from the admin records remain in the survey data.')
@@ -67,6 +69,29 @@ def ftp_merger(dataframe1, dataframe2):
     return df
 
 
+def drop_y_columns(dataframe):
+    """Drops duplicate columns."""
+
+    df = dataframe.copy()
+
+    cols_to_drop = [col for col in df if col.endswith('_y')]
+    df = df.drop(cols_to_drop, 1)
+
+    return df
+
+
+def colunm_renamer(dataframe):
+    """Removes '_x' from column names after merging."""
+
+    df = dataframe.copy()
+
+    col_names = [col for col in df.columns.values]
+    new_names = [col_name[:-2] if col_name.endswith('_x') else col_name for col_name in col_names]
+    df.columns = new_names
+
+    return df
+
+
 def summary_stats(dataframe):
     """Returns a dataframe showing how many people believed in the time limit 
     vs. how many people did not. 
@@ -81,10 +106,10 @@ def summary_stats(dataframe):
     ]
 
     sum_table = pd.DataFrame({'CATEGORY': categories, 
-                              'COUNTS': df['fmi2_x'].value_counts()})
+                              'COUNTS': df['fmi2'].value_counts()})
 
     sum_table = sum_table.append({'CATEGORY': 'Valid Responses', 
-                                  'COUNTS': len(df['fmi2_x'])}, 
+                                  'COUNTS': len(df['fmi2'])}, 
                                   ignore_index=True)
 
     return sum_table
@@ -97,9 +122,9 @@ def new_dummy_creator(dataframe):
 
     df = dataframe.copy()
 
-    df = df[(df['fmi2_x'] == 1) | (df['fmi2_x'] == 2)]
+    df = df[(df['fmi2'] == 1) | (df['fmi2'] == 2)]
 
-    df['TLyes'] = [1 if val == 1 else 0 for val in df['fmi2_x']]
+    df['TLyes'] = [1 if val == 1 else 0 for val in df['fmi2']]
 
     return df
 
@@ -109,7 +134,7 @@ def xtab_generator(dataframe):
 
     df = dataframe.copy()
 
-    tabs = pd.crosstab(index=df['e_x'], columns=df['TLyes'], 
+    tabs = pd.crosstab(index=df['e'], columns=df['TLyes'], 
                        margins=True, margins_name='Total',
                        rownames=['Original Treatment'],
                        colnames=['Time Limit Belief'])
@@ -125,18 +150,18 @@ def mean_imputer(dataframe):
     df = dataframe.copy()
 
     columns = [
-        'male_x',
-        'agelt20_x',
-        'age2534_x',
-        'age3544_x',
-        'agege45_x',
-        'black_x',
-        'hisp_x',
-        'otheth_x',
-        'martog_x',
-        'marapt_x',
-        'nohsged_x',
-        'applcant_x'
+        'male',
+        'agelt20',
+        'age2534',
+        'age3544',
+        'agege45',
+        'black',
+        'hisp',
+        'otheth',
+        'martog',
+        'marapt',
+        'nohsged',
+        'applcant'
     ]
     df[columns] = df[columns].fillna(df[columns].mean())
 
@@ -177,29 +202,29 @@ def time_limit_ols(dataframe):
 
     covariates = [
         'TLyes',
-        'male_x',
-        'agelt20_x',
-        'age2534_x',
-        'age3544_x',
-        'agege45_x',
-        'black_x',
-        'hisp_x',
-        'otheth_x',
-        'martog_x',
-        'marapt_x',
-        'nohsged_x',
-        'applcant_x',
-        'yremp_x',
-        'emppq1_x',
-        'yrearn_x',
-        'yrearnsq_x',
-        'pearn1_x',
-        'recpc1_x',
-        'yrrec_x',
-        'yrkrec_x',
-        'rfspc1_x',
-        'yrrfs_x',
-        'yrkrfs_x',
+        'male',
+        'agelt20',
+        'age2534',
+        'age3544',
+        'agege45',
+        'black',
+        'hisp',
+        'otheth',
+        'martog',
+        'marapt',
+        'nohsged',
+        'applcant',
+        'yremp',
+        'emppq1',
+        'yrearn',
+        'yrearnsq',
+        'pearn1',
+        'recpc1',
+        'yrrec',
+        'yrkrec',
+        'rfspc1',
+        'yrrfs',
+        'yrkrfs',
     ]
 
     right_hand_side =  ' + '.join([variable for variable in covariates])
@@ -268,4 +293,9 @@ def iv_estimation(dataframe):
                     df['e_x'], df['TLyes'])
     
     iv_mod.fit().summary
+
+
+
+
+
 
