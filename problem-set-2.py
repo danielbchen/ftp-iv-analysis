@@ -52,6 +52,9 @@ def main():
     print('QUESTION 5: \n',
           'Correlation between e and TLyes:',
           corr)
+    print('\n')
+    print('First Stage Regression of TLyes ~ e: \n')
+    first_stage_test(df)
 
     print('\n\n')
 
@@ -283,6 +286,16 @@ def correlation_test(dataframe, var1, var2):
     correlation, _ = pearsonr(df[var1], df[var2])
 
     return correlation
+
+
+def first_stage_test(dataframe):
+    """Prints regression output where TLyes is explained by e."""
+
+    df = dataframe.copy()
+
+    output = smf.ols(formula='TLyes ~ e', data=df).fit().summary()
+
+    print(output)
 
 
 def iv_estimation(dataframe):
