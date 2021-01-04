@@ -1178,7 +1178,7 @@ first_stage_test(df)
     [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
 
-From the output above, the t-stat is roughly $18$. The F-stat is simply the t-stat squared, and $18^{2}$ is clearly greater than $10$.
+From the output above, the t-stat is roughly 18. The F-stat is simply the t-stat squared, and 18<sup>2</sup> is clearly greater than 10.
 
 # Instrumental Variable Estimation
 
