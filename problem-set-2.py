@@ -259,43 +259,67 @@ def time_limit_ols(dataframe):
 
 
 def iv_estimation(dataframe):
-    """
+    """Takes in a dataframe and returns estimates where random assignment 
+    serves as an instrument for believing in the time limit. 
     """
 
     df = dataframe.copy()
 
-    df['CONSTANT'] = 1
+    dependent_variables = [
+        # Employment variables
+        'vempq217',
+        'vempq2t5',
+        'vempq6t9',
+        'vemp1013',
+        'vemp1417',
+        # Welfare variables
+        'vrecc217',
+        'vrecc2t5',
+        'vrecc6t9',
+        'vrec1013',
+        'vrec1417',
+        # Income variables
+        'tinc217',
+        'tinc2t5',
+        'tinc6t9',
+        'tinc1013',
+        'tinc1417'
+    ]
 
+    df['CONSTANT'] = 1
     controls = [
-        'male_x',
-        'agelt20_x',
-        'age2534_x',
-        'age3544_x',
-        'agege45_x',
-        'black_x',
-        'hisp_x',
-        'otheth_x',
-        'martog_x',
-        'marapt_x',
-        'nohsged_x',
-        'applcant_x',
-        'yremp_x',
-        'emppq1_x',
-        'yrearn_x',
-        'yrearnsq_x',
-        'pearn1_x',
-        'recpc1_x',
-        'yrrec_x',
-        'yrkrec_x',
-        'rfspc1_x',
-        'yrrfs_x',
-        'yrkrfs_x',
+        'male',
+        'agelt20',
+        'age2534',
+        'age3544',
+        'agege45',
+        'black',
+        'hisp',
+        'otheth',
+        'martog',
+        'marapt',
+        'nohsged',
+        'applcant',
+        'yremp',
+        'emppq1',
+        'yrearn',
+        'yrearnsq',
+        'pearn1',
+        'recpc1',
+        'yrrec',
+        'yrkrec',
+        'rfspc1',
+        'yrrfs',
+        'yrkrfs',
         'CONSTANT'
     ]
 
-    iv_mod = IV2SLS(df['vempq2t5'], df[controls],
-                    df['e_x'], df['TLyes'])
-    
-    iv_mod.fit().summary
+    iv_models = [IV2SLS(df[dep_var], df[controls], df['TLyes'], df['e']).fit() for dep_var in dependent_variables]
 
+    iv_results = pd.DataFrame({'Variable': dependent_variables,
+                               'Coefficient': [model.params[-1] for model in iv_models],
+                               'Std_Error': [model.std_errors[-1] for model in iv_models],
+                               't_stat': [model.tstats[-1] for model in iv_models],
+                               'p_value': [model.pvalues[-1] for model in iv_models]})
 
+    return iv_results
