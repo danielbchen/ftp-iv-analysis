@@ -1,7 +1,9 @@
+from linearmodels import IV2SLS
 import numpy as np
 import pandas as pd
+from scipy.stats import pearsonr
 import statsmodels.formula.api as smf
-from linearmodels import IV2SLS
+
 
 def main():
     """
@@ -42,6 +44,14 @@ def main():
     print('QUESTION 4: \n',
           'Effect of believing in the time limit on welfare receipt: \n\n',
           time_limit_results)
+
+    print('\n\n')
+
+    # Question 5:
+    corr = correlation_test(df, 'e', 'TLyes')
+    print('QUESTION 5: \n',
+          'Correlation between e and TLyes:',
+          corr)
 
     print('\n\n')
 
@@ -263,6 +273,16 @@ def time_limit_ols(dataframe):
     ]]
 
     return ols_results
+
+
+def correlation_test(dataframe, var1, var2):
+    """Returns Pearson's R coefficient."""
+
+    df = dataframe.copy()
+
+    correlation, _ = pearsonr(df[var1], df[var2])
+
+    return correlation
 
 
 def iv_estimation(dataframe):
