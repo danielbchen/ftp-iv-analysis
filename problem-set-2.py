@@ -43,6 +43,13 @@ def main():
           'Effect of believing in the time limit on welfare receipt: \n\n',
           time_limit_results)
 
+    print('\n\n')
+
+    # Question 6:
+    iv_results = iv_estimation(df)
+    print('QUESTION 6: \n',
+          'Instrumental Variable Estimates: \n\n',
+          iv_results)
 
 def admin_data_loader():
     """Loads ftp administrative dataset."""
