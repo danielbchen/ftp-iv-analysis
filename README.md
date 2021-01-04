@@ -1094,7 +1094,7 @@ In the following subsections, I will review the assumptions necessary to use an 
 
 ## 1. Exclusion Restriction 
 
-The instrument must not be correlated with the error term and must be exogenous. Mathematically speaking, we can say that $cor(z, u) = 0$ and $E(Y_{0i}| Z = 1, D = 0)$ = $E(Y_{0i} | Z = 0, D = 0)$. In other words, the untreated potential outcome for an individual when the instrument is turned on is equal to the untreated potential outcome for an individual when the instrument is turned off. The instrument itself has no effect on the potential outcome conditional on the same unit being assigned to control or treatment. 
+The instrument must not be correlated with the error term and must be exogenous. Mathematically speaking, we can say that cor(z, u) = 0 and E(Y<sub>0i</sub>| Z = 1, D = 0) = E(Y<sub>0i</sub> | Z = 0, D = 0). In other words, the untreated potential outcome for an individual when the instrument is turned on is equal to the untreated potential outcome for an individual when the instrument is turned off. The instrument itself has no effect on the potential outcome conditional on the same unit being assigned to control or treatment. 
 
 This condition is fundamentally untestable because we never observe the error term, however, it is *likely met*. Because the original experimental dummy (`e`) is exogenous through random assignment, it's plausible that the assignment itself has no direct effect on any of the dependent variables. It is only through the belief (or disbelief) in the time limit (`TLyes`) that there is an effect on the variables of interest.
 
