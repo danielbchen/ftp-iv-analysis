@@ -37,6 +37,7 @@ def main():
     print('\n\n')
 
     # Question 4:
+    df = mean_imputer(df)
     time_limit_results = time_limit_ols(df)
     print('QUESTION 4: \n',
           'Effect of believing in the time limit on welfare receipt: \n\n',
@@ -188,19 +189,20 @@ def paramater_retriever(list_object, parameter):
 
 
 def time_limit_ols(dataframe):
-    """Estimates effect of believing in the time limit on welfare receipt."""
+    """Runs OLS to estimate effect of believing in the time limit on welfare
+    receipt during years 1-4 of the sample period.
+    """
 
     df = dataframe.copy()
 
-    dependent_variables = [
+    welfare_vars = [
         'vrecc217',
         'vrecc2t5',
         'vrecc6t9',
         'vrec1013',
         'vrec1417',
     ]
-
-    covariates = [
+    ind_vars = [
         'TLyes',
         'male',
         'agelt20',
@@ -226,24 +228,25 @@ def time_limit_ols(dataframe):
         'yrrfs',
         'yrkrfs',
     ]
+    right_hand_side = ' + '.join([var for var in ind_vars])
 
-    right_hand_side =  ' + '.join([variable for variable in covariates])
-    formulas = [dep_var + ' ~ ' + right_hand_side for dep_var in dependent_variables]
+    formulas = [var + ' ~ ' + right_hand_side for var in welfare_vars]
+    regressions = [smf.ols(formula=formula, data=df).fit()
+                   for formula in formulas]
 
-    regressions = [smf.ols(formula=formula, data=df).fit() for formula in formulas]
-
-    df = pd.DataFrame({
-        'Weflare_Variable': dependent_variables,
+    ols_results = pd.DataFrame({
+        'Welfare_Variable': welfare_vars,
         'Coefficient': paramater_retriever(regressions, 'coefficients'),
         'Std_Error': paramater_retriever(regressions, 'standard error'),
         'p_value': paramater_retriever(regressions, 'pvalues'),
         'Conf_Low': paramater_retriever(regressions, 'conf_int_low'),
         'Conf_High': paramater_retriever(regressions, 'conf_int_high')})
 
-    df['t_stat'] = df['Coefficient'] / df['Std_Error']
+    ols_results['t_stat'] = ols_results['Coefficient'] / \
+        ols_results['Std_Error']
 
-    df = df[[
-        'Weflare_Variable', 
+    ols_results = ols_results[[
+        'Welfare_Variable',
         'Coefficient',
         'Std_Error',
         't_stat',
@@ -252,7 +255,8 @@ def time_limit_ols(dataframe):
         'Conf_High'
     ]]
 
-    return df
+    return ols_results
+
 
 def iv_estimation(dataframe):
     """
@@ -293,9 +297,5 @@ def iv_estimation(dataframe):
                     df['e_x'], df['TLyes'])
     
     iv_mod.fit().summary
-
-
-
-
 
 
