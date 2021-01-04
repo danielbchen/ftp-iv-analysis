@@ -1,8 +1,10 @@
-# Notebook Objective
+# Project Overview
 
-In this notebook, I use an instrumental variable to estimate the effect of a time limited welfare eligibility on family well-being. 
+In this project, I use an instrumental variable to estimate the effect of a time limited welfare eligibility on family well-being and contrast findings to estimation via ordinary least squares.
 
 Data are from the Family Transition Program (FTP). FTP was the first welfare reform initiative in which some families reached a time limit on their welfare eligibility and had their benefits canceled. The program took place in  Escambia County, Florida from 1994 to 1999. Key findings from the study, as well as additional background information can be found [here](https://www.mdrc.org/publication/family-transition-program).
+
+This README contains the full analysis. A [.pdf version](https://github.com/danielbchen/problem-set-2/blob/main/(PDF%20VERSION)%20Instrumental%20Variables%20Using%20Data%20from%20Florida's%20Family%20Transition%20Program%20(FTP)%20in%201994.pdf) is also available along with the [original Jupyter Notebook](https://github.com/danielbchen/problem-set-2/blob/main/Instrumental%20Variables%20Using%20Data%20from%20Florida's%20Family%20Transition%20Program%20(FTP)%20in%201994.ipynb).
 
 # Preparing the Data
 
