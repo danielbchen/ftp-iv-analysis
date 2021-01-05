@@ -6,51 +6,43 @@ import statsmodels.formula.api as smf
 
 
 def main():
-    """
-    """
+    """Prints out OLS results and IV results for analysis."""
 
-    # Question 1:
+    # Data Cleaning
     admin = admin_data_loader()
     survey = survey_data_loader()
     df = ftp_merger(admin, survey)
     df = drop_y_columns(df)
     df = colunm_renamer(df)
-    print('QUESTION 1: \n', 
-          len(df), 
-          'of the original sample members from the admin records remain in the survey data.')
 
     print('\n\n')
 
-    # Question 2: 
+    # Summary Stats
     sum_stats = summary_stats(df)
-    print('QUESTION 2: \n',
-          'Please find a table below summarizing the counts: \n\n',
+    print('The table below summarizes the response counts: \n\n',
           sum_stats)
 
     print('\n\n')
 
-    # Question 3:
+    # Cross-tabulations
     df = new_dummy_creator(df) 
     xtabs = xtab_generator(df)
-    print('QUESTION 3: \n',
-          'Cross-tabluation of original assignment vs. belief in time limit: \n\n',
+    print('Cross-tabluation of original assignment vs. belief in time limit: \n\n',
           xtabs)
 
     print('\n\n')
 
-    # Question 4:
+    # OLS Results
     df = mean_imputer(df)
     time_limit_results = time_limit_ols(df)
-    print('QUESTION 4: \n',
-          'Effect of believing in the time limit on welfare receipt: \n\n',
+    print('Effect of believing in the time limit on welfare receipt: \n\n',
           time_limit_results)
 
     print('\n\n')
 
-    # Question 5:
+    # Testing Instrumental Variable Assumptions
     corr = correlation_test(df, 'e', 'TLyes')
-    print('QUESTION 5: \n',
-          'Correlation between e and TLyes:',
+    print(Correlation between e and TLyes:',
           corr)
     print('\n')
     print('First Stage Regression of TLyes ~ e: \n')
@@ -58,11 +50,12 @@ def main():
 
     print('\n\n')
 
-    # Question 6:
+    # IV Results
     iv_results = iv_estimation(df)
     print('QUESTION 6: \n',
           'Instrumental Variable Estimates: \n\n',
           iv_results)
+
 
 def admin_data_loader():
     """Loads ftp administrative dataset."""
@@ -363,3 +356,7 @@ def iv_estimation(dataframe):
                                'p_value': [model.pvalues[-1] for model in iv_models]})
 
     return iv_results
+
+
+if __name__ == '__main__':
+    main()
