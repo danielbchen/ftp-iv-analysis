@@ -1420,3 +1420,13 @@ Finally, when contrasting the IV estimates to OLS, it's clear that IV estimates 
 
 ## Effect on Income
 Income is the last outcome of interest (variables starting with "tinc"). The data show that those who believed in the time limit had greater levels of income than those who did not. However, the increase is only statistically different from zero in year three of the study (`tinc1013`). 
+
+# Conclusion
+
+There are two key takeaways from this project:
+
+1. Ordinary Least Squares returns biased results when our explanatory variable is endogenous. In this scenario, participant self-selection invalidates our estimates when using OLS. We need an exogenous, instrumental variable, in order to make causal claims. 
+
+2. From a causal inference perspective, at the end of the day, it appears that imposing a time limit on welfare benefits had no effect on employment, welfare, or income outcomes. After four years, participants who believed in the time limit fared no different from participants who did not believe in the time limit. 
+
+    However, statistical magnitudes can be different from real world magnitudes. For example, in year four (`tinc1417`), individuals who believed in the time limit had a higher income, on average, by about 1250 dollars. Since 0 is included in the 95 percent confidence interval, statistical analyses would tell us that the increase is not meaningful. Even so, it's difficult to make the case in a real world setting that an added 1250 dollars is nothing - especially for individuals and families who lie on the lower end of the income distribution.
