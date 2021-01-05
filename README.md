@@ -12,9 +12,14 @@ This README contains the full analysis. A [.pdf version](https://github.com/dani
 ```python
 from linearmodels import IV2SLS # pip install linearmodels
 import numpy as np
+import os
 import pandas as pd
 from scipy.stats import pearsonr
 import statsmodels.formula.api as smf
+import warnings
+
+warnings.filterwarnings('ignore')
+path = os.path.dirname(os.path.abspath("__file__"))
 ```
 
 I leverage both the administrative data (which contains official employment and income records) and survey data (which contains participant self-reported data on well-being) in the analysis. We'll need to load, merge, and clean the data before estimating treatment effects. 
@@ -24,8 +29,8 @@ I leverage both the administrative data (which contains official employment and 
 def admin_data_loader():
     """Loads ftp administrative dataset."""
 
-    path = '/Users/danielchen/Desktop/UChicago/Year Two/Autumn 2020/Program Evaluation/Problem Sets/Problem Set 2/ftp_ar.dta'
-    df = pd.read_stata(path)
+    admin_path = os.path.join(path, 'ftp_ar.dta')
+    df = pd.read_stata(admin_path)
 
     return df
 
@@ -33,8 +38,8 @@ def admin_data_loader():
 def survey_data_loader():
     """Loads ftp survey dataset."""
 
-    path = '/Users/danielchen/Desktop/UChicago/Year Two/Autumn 2020/Program Evaluation/Problem Sets/Problem Set 1/ftp_srv.dta'
-    df = pd.read_stata(path)
+    survey_path = os.path.join(path, 'ftp_srv.dta')
+    df = pd.read_stata(survey_path)
 
     return df
 
