@@ -1,5 +1,6 @@
 from linearmodels import IV2SLS
 import numpy as np
+import os
 import pandas as pd
 from scipy.stats import pearsonr
 import statsmodels.formula.api as smf
@@ -42,7 +43,7 @@ def main():
 
     # Testing Instrumental Variable Assumptions
     corr = correlation_test(df, 'e', 'TLyes')
-    print(Correlation between e and TLyes:',
+    print('Correlation between e and TLyes:',
           corr)
     print('\n')
     print('First Stage Regression of TLyes ~ e: \n')
@@ -52,16 +53,15 @@ def main():
 
     # IV Results
     iv_results = iv_estimation(df)
-    print('QUESTION 6: \n',
-          'Instrumental Variable Estimates: \n\n',
+    print('Instrumental Variable Estimates: \n\n',
           iv_results)
 
 
 def admin_data_loader():
     """Loads ftp administrative dataset."""
 
-    path = '/Users/danielchen/Desktop/UChicago/Year Two/Autumn 2020/Program Evaluation/Problem Sets/Problem Set 2/ftp_ar.dta'
-    df = pd.read_stata(path)
+    admin_path = os.path.join(path, 'ftp_ar.dta')
+    df = pd.read_stata(admin_path)
 
     return df
 
@@ -69,8 +69,8 @@ def admin_data_loader():
 def survey_data_loader():
     """Loads ftp survey dataset."""
 
-    path = '/Users/danielchen/Desktop/UChicago/Year Two/Autumn 2020/Program Evaluation/Problem Sets/Problem Set 1/ftp_srv.dta'
-    df = pd.read_stata(path)
+    survey_path = os.path.join(path, 'ftp_srv.dta')
+    df = pd.read_stata(survey_path)
 
     return df
 
@@ -359,4 +359,5 @@ def iv_estimation(dataframe):
 
 
 if __name__ == '__main__':
+    path = os.path.dirname(os.path.abspath("__file__"))
     main()
