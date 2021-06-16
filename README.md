@@ -4,7 +4,9 @@ In this project, I use an instrumental variable to estimate the effect of a time
 
 Data are from the Family Transition Program (FTP). FTP was the first welfare reform initiative in which some families reached a time limit on their welfare eligibility and had their benefits canceled. The program took place in  Escambia County, Florida from 1994 to 1999. Key findings from the study, as well as additional background information can be found [here](https://www.mdrc.org/publication/family-transition-program).
 
-This README contains the full analysis. A [.pdf version](https://github.com/danielbchen/problem-set-2/blob/main/(PDF%20VERSION)%20Instrumental%20Variables%20Using%20Data%20from%20Florida's%20Family%20Transition%20Program%20(FTP)%20in%201994.pdf) is also available along with the [original Jupyter Notebook](https://github.com/danielbchen/problem-set-2/blob/main/Instrumental%20Variables%20Using%20Data%20from%20Florida's%20Family%20Transition%20Program%20(FTP)%20in%201994.ipynb).
+This README contains the full analysis. A [PDF version in Python](https://github.com/danielbchen/problem-set-2/blob/main/(PDF%20VERSION)%20Instrumental%20Variables%20Using%20Data%20from%20Florida's%20Family%20Transition%20Program%20(FTP)%20in%201994.pdf) is also available along with the [original Jupyter Notebook](https://github.com/danielbchen/problem-set-2/blob/main/Instrumental%20Variables%20Using%20Data%20from%20Florida's%20Family%20Transition%20Program%20(FTP)%20in%201994.ipynb).
+
+For R users, the [R Markdown](https://github.com/danielbchen/ftp-iv-analysis/blob/main/Instrumental%20Variables%20-%20FTP.Rmd) and resulting [PDF](https://github.com/danielbchen/ftp-iv-analysis/blob/main/Instrumental-Variables---FTP.pdf) are also available.
 
 # Preparing the Data
 
